@@ -210,6 +210,7 @@ Function Invoke-XmlRpcMethod {
 Function Invoke-DokuwikiXmlRpcMethod {
   [CmdletBinding()]
   Param(
+    [Alias("Uri", "Url", "BaseUrl")]
     [Parameter(Mandatory=$True,Position=0)]
     [String]$BaseUri,
     [Parameter(Mandatory=$True,Position=1)]

@@ -1,18 +1,5 @@
 ﻿#region XmlRpc
 
-Function Get-XmlSafeString {
-  [CmdletBinding()]
-  Param(
-    [Parameter(Mandatory=$False,Position=0)]
-    [String]$Content
-  )
-
-  $Content = [Security.SecurityElement]::Escape($Content)
-
-  Return $Content -creplace 'Ä','&#196;' -creplace 'Ö','&#214;' -creplace 'Ü','&#220;' -creplace 'ä','&#228;' -creplace 'ö','&#246;' -creplace 'ü','&#252;' -creplace 'ß','&#223;'
-
-}
-
 Function Get-XmlRpcObject {
   [CmdletBinding()]
   Param(
@@ -36,7 +23,7 @@ Function Get-XmlRpcObject {
   }
 
   Switch ($Object.GetType().Name) {
-    "String" { Return "$Prefix<string>$(Get-XmlSafeString $Object)</string>$Suffix" }
+    "String" { Return "$Prefix<string>$([Security.SecurityElement]::Escape($Object))</string>$Suffix" }
     "Boolean" {
       If ($Object) {
         Return "$Prefix<boolean>1</boolean>$Suffix"
@@ -180,8 +167,10 @@ Function Invoke-XmlRpcMethod {
     [Switch]$NewSession
   )
 
+  $Body = Get-XmlRpcMethodCallBody -Name $Name -Params $Params
+
   $RequestParams = @{
-    Body = Get-XmlRpcMethodCallBody -Name $Name -Params $Params
+    Body = [System.Text.Encoding]::UTF8.GetBytes($Body)
     UseBasicParsing = $True
     Method = "Post"
     ContentType = "text/xml"

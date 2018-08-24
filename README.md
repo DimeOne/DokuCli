@@ -52,4 +52,4 @@ $PageWiki2 = Get-DokuPage -Page "start" -SessionName wiki2
 DokuCli has been tested on the following Platforms:
   - Windows 10.0.17134 - PowerShell 5.1.17134.228
   - Ubuntu 16.04 - PowerShell Core 6.0.4
-  - ~~Ubuntu 18.04 - PowerShell Core 6.1.0-rc.1~~ ( Invoke-WebRequest POST throws errors )
+  - Ubuntu 18.04 - PowerShell Core 6.1.0-rc.1
